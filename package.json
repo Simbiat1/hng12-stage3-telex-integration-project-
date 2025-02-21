@@ -1,0 +1,20 @@
+{
+  "name": "hng12-stage3-telex-integration-project-",
+  "version": "1.0.0",
+  "description": "A Telex integration that automatically shortens long URLs in messages using the bit.ly API.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Simbiat Jinadu",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "winston": "^3.17.0"
+  }
+}
