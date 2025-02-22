@@ -114,7 +114,6 @@ app.post('/shortenURL', async (req, res) => {
         logger.error('Error processing request', {
             message: error.message,
             stack: error.stack,
-            url: `https://api.telex.im/channels/${channel_id}/messages`, 
             requestBody: { content: modifiedMessage }
         });
         res.status(500).json({ error: 'Failed to process the message' });
