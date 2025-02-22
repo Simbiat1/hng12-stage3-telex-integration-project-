@@ -4,12 +4,16 @@ import axios from "axios";
 import path from "path"; 
 import { fileURLToPath } from "url";
 import winston from "winston";
+import cors from "cors";
 
 const {combine, timestamp, json, prettyPrint, errors} = winston.format
  
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
+
 const PORT = process.env.PORT || 4000;
 const logger = winston.createLogger({
     level: "info",
