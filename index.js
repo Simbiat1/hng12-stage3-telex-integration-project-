@@ -57,11 +57,19 @@ async function shortenLink(longLink) {
 
 // Endpoint to handle incoming messages for the modifier integration
 app.post('/webhook', async (req, res) => {
+    // Checks for POST method
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Invalid request method' });
+    }
+
     const { message, settings, channel_id } = req.body; 
 
     if (!message || !settings || !channel_id) {
         return res.status(400).json({ error: 'Message, channel_id, and settings are required' });
     }
+
+    // Logs incoming request
+    logger.info("Incoming request", { body: req.body });
 
     // Regular expression to find URLs in the message
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -88,10 +96,17 @@ app.post('/webhook', async (req, res) => {
             shortenedUrls.forEach((shortenedUrl, index) => {
                 modifiedMessage = modifiedMessage.replace(urls[index], shortenedUrl.link);
             }); // Replaces original URLs with shortened URLs in the message
+
+             // Logs formatted message
+        logger.info("Formatted message", { message: modifiedMessage });
         }
 
-        // Respond with the modified message
-        res.json({ message: modifiedMessage });
+        // Responds with the modified message
+        res.json({ 
+            event_name: "link_shortened",
+            message: modifiedMessage,
+            status: "success",
+            username: "link-snap-bot" });
     } catch (error) {
         res.status(500).json({ error: 'Failed to process the message' });
     }
