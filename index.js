@@ -6,8 +6,8 @@ import { fileURLToPath } from "url";
 import winston from "winston";
 import cors from "cors";
 
-const {combine, timestamp, json, prettyPrint, errors} = winston.format
- 
+const { combine, timestamp, json, prettyPrint, errors } = winston.format;
+
 dotenv.config();
 
 const app = express();
@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 4000;
 const logger = winston.createLogger({
     level: "info",
     format: combine(
-        errors({stack: true}),
+        errors({ stack: true }),
         timestamp(),
         json(),
         prettyPrint()
@@ -26,12 +26,8 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.File({ filename: "combined.log" }),
         new winston.transports.Console(),
-        ],
-})   
-
-const requestLog ={method: "GET", isAuthenticated: false}
-
-logger.info("An info log", requestLog);
+    ],
+});
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -56,11 +52,6 @@ async function shortenLink(longLink) {
 
 // Endpoint to handle incoming messages for the modifier integration
 app.post('/shortenURL', async (req, res) => {
-    // Checks for POST method
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Invalid request method' });
-    }
-
     const { message, settings, channel_id } = req.body; 
 
     if (!message || !settings || !channel_id) {
@@ -75,48 +66,41 @@ app.post('/shortenURL', async (req, res) => {
     const urls = message.match(urlRegex); // Finds all URLs in the message
 
     if (!urls) {
-        // If no URLs are found, returns the original message
+        // If no URLs are found, return the original message
         return res.json({ message });
     }
 
     let modifiedMessage = message; // Starting with the original message
     
     try {
+        // Shortening logic
+        const shortenPromises = urls.map(url => shortenLink(url)); // Create an array of promises to shorten each URL
+        const shortenedUrls = await Promise.all(shortenPromises); // Wait for all promises to resolve
 
-        // Shortening in case of one URL in the message
-        if (urls.length === 1) {
-            const shortenedUrl = await shortenLink(urls[0]); // Shortens the single URL
-            modifiedMessage = modifiedMessage.replace(urls[0], shortenedUrl.link); // Replaces the original URL with the shortened one (link in the response from bitly)
-        } else {
-            // Shortening in case of multiple URLs
-            const shortenPromises = urls.map(url => shortenLink(url)); // Creates an array of promises to shorten each URL
+        shortenedUrls.forEach((shortenedUrl, index) => {
+            modifiedMessage = modifiedMessage.replace(urls[index], shortenedUrl.link);
+        }); // Replace original URLs with shortened URLs in the message
 
-            const shortenedUrls = await Promise.all(shortenPromises); // Waits for all promises to resolve
-
-            shortenedUrls.forEach((shortenedUrl, index) => {
-                modifiedMessage = modifiedMessage.replace(urls[index], shortenedUrl.link);
-            }); // Replaces original URLs with shortened URLs in the message
-
-             // Logs formatted message
+        // Logs formatted message
         logger.info("Formatted message", { message: modifiedMessage });
-        }
 
-       // Edits the original message in the Telex channel
-       await axios.put(`https://api.telex.im/channels/${channel_id}/messages`, {
-        content: modifiedMessage 
-    });
+        // Edits the original message in the Telex channel
+        await axios.put(`https://api.telex.im/channels/${channel_id}/messages`, {
+            content: modifiedMessage 
+        });
 
         // Responds with the modified message
         res.json({ 
             event_name: "link_shortened",
             message: modifiedMessage,
             status: "success",
-            username: "link-snap-bot" });
+            username: "link-snap-bot" 
+        });
     } catch (error) {
         logger.error('Error processing request', {
             message: error.message,
             stack: error.stack,
-            url: 'https://api.telex.im/channels/${channel_id}/messages', 
+            url: `https://api.telex.im/channels/${channel_id}/messages`, 
             requestBody: { content: modifiedMessage }
         });
         res.status(500).json({ error: 'Failed to process the message' });
