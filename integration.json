@@ -8,7 +8,7 @@
         "app_description": "This Simple Link Shortener automatically replaces long, unwieldy URLs with concise, shortened links.",
         "app_logo": "URL to the application logo.",
         "app_name": "LinkSnap",
-        "app_url": "URL to the application or service.",
+        "app_url": "https://hng12-stage3-telex-integration-project.onrender.com",
         "background_color": "#2C3E50"
       },
       "integration_category": "Task Automation",
@@ -29,6 +29,6 @@
             "required": true
           }
       ],
-      "target_url": "http://localhost:3000/shortenUrl."
+      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/shortenURL"
     }
   }
