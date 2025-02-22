@@ -85,17 +85,18 @@ app.post('/shortenURL', async (req, res) => {
 
     try {
         // Shortening logic
-        const shortenPromises = urls.map(url => shortenLink(url)); // Create an array of promises to shorten each URL
-        const shortenedUrls = await Promise.all(shortenPromises); // Wait for all promises to resolve
+        //const shortenPromises = urls.map(url => shortenLink(url)); // Create an array of promises to shorten each URL
+        //const shortenedUrls = await Promise.all(shortenPromises); // Wait for all promises to resolve
 
-        const firstShortenedUrl = shortenedUrls[0].link; // Gets the shortened link from the first URL
+        //const firstShortenedUrl = shortenedUrls[0].link; // Gets the shortened link from the first URL
 
         // Logs formatted message
-        logger.info("Formatted message", { message: firstShortenedUrl });
+        //logger.info("Formatted message", { message: firstShortenedUrl });
 
         // Responds with only the shortened URL
         res.json({ 
-            message: firstShortenedUrl, // SendS only the shortened URL
+          //  message: firstShortenedUrl, // SendS only the shortened URL
+          message:'<a href="https://www.google.com">link</a>',
             event_name: "link_shortened",
             // message: modifiedMessage,
             status: "success",
