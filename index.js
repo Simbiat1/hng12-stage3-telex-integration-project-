@@ -79,8 +79,9 @@ app.post('/shortenURL', async (req, res) => {
         return res.json({ message });
     }
 
+    let modifiedMessage = message; // Starting with the original message
+    
     try {
-        let modifiedMessage = message; // Starting with the original message
 
         // Shortening in case of one URL in the message
         if (urls.length === 1) {
