@@ -69,9 +69,9 @@ app.post('/shortenURL', async (req, res) => {
      // Logs incoming request
      logger.info("Incoming request", { body: req.body });
 
-    const { message, settings, channel_id } = req.body; 
+    const { message, settings } = req.body; 
 
-    if (!message || !settings || !channel_id) {
+    if (!message || !settings ) {
         return res.status(400).json({ error: 'Message, channel_id, and settings are required' });
     }
 
