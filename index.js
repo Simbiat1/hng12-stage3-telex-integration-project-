@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import winston from "winston";
 import cors from "cors";
-import cheerio from "cheerio";
+import * as cheerio  from "cheerio";
 
 const { combine, timestamp, json, prettyPrint, errors } = winston.format;
 
