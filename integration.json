@@ -20,6 +20,13 @@
         "Integrates seamlessly with Telex channels."
       ],
       "author": "Simbiat Jinadu",
+      "permissions": {
+			"events": [
+				"Receive messages from Telex channels.",
+				"Format messages based on predefined templates or logic.",
+				"Send formatted responses back to the channel."
+			]
+		},
       "settings": [
         {
             "label": "Long URL",
@@ -29,6 +36,8 @@
             "required": true
           }
       ],
-      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook"
+      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook",
+      "tick_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook",
+      "website": "https://telex.im"
     }
   }
