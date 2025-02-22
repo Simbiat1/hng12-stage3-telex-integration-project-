@@ -36,8 +36,8 @@
             "required": true
           }
       ],
-      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook",
-      "tick_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook",
+      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/shortenURL",
+      "tick_url": "https://hng12-stage3-telex-integration-project.onrender.com/shortenURL",
       "website": "https://telex.im"
     }
   }

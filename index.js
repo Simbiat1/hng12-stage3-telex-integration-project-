@@ -56,7 +56,7 @@ async function shortenLink(longLink) {
 }
 
 // Endpoint to handle incoming messages for the modifier integration
-app.post('/webhook', async (req, res) => {
+app.post('/shortenURL', async (req, res) => {
     // Checks for POST method
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Invalid request method' });
