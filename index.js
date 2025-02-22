@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import winston from "winston";
 import cors from "cors";
-import * as cheerio  from "cheerio";
+import * as cheerio from "cheerio";
 
 const { combine, timestamp, json, prettyPrint, errors } = winston.format;
 
@@ -57,7 +57,7 @@ async function shortenLink(longLink) {
             }
         });
 
-        return response.data;
+        return response.data; // Return the full response from Bitly
     } catch (error) {
         console.error('Error:', error);
         throw error;
@@ -66,55 +66,45 @@ async function shortenLink(longLink) {
 
 // Endpoint to handle incoming messages for the modifier integration
 app.post('/shortenURL', async (req, res) => {
-     // Logs incoming request
-     logger.info("Incoming request", { body: req.body });
+    // Logs incoming request
+    logger.info("Incoming request", { body: req.body });
 
     const { message, settings } = req.body; 
 
-    if (!message || !settings ) {
-        return res.status(400).json({ error: 'Message, channel_id, and settings are required' });
+    if (!message || !settings) {
+        return res.status(400).json({ error: 'Message and settings are required' });
     }
 
-    //Extract urls from html message
+    // Extract URLs from HTML message
     const urls = extractUrlsFromHtml(message);
 
-    // // Regular expression to find URLs in the message
-    // const urlRegex = /(https?:\/\/[^\s]+)/g;
-    // const urls = message.match(urlRegex); // Finds all URLs in the message
-
     if (!urls.length) {
-        // If no URLs are found, returns the original message
+        // If no URLs are found, return the original message
         return res.json({ message });
     }
 
-    let modifiedMessage = message; // Starting with the original message
-    
     try {
         // Shortening logic
-        const shortenPromises = urls.map(url => shortenLink(url)); // Creates an array of promises to shorten each URL
-        const shortenedUrls = await Promise.all(shortenPromises); // Waits for all promises to resolve
+        const shortenPromises = urls.map(url => shortenLink(url)); // Create an array of promises to shorten each URL
+        const shortenedUrls = await Promise.all(shortenPromises); // Wait for all promises to resolve
 
-        shortenedUrls.forEach((shortenedUrl, index) => {
-            modifiedMessage = modifiedMessage.replace(urls[index], shortenedUrl.link);
-        }); // Replaces original URLs with shortened URLs in the message
+        const firstShortenedUrl = shortenedUrls[0].link; // Gets the shortened link from the first URL
 
         // Logs formatted message
-        logger.info("Formatted message", { message: modifiedMessage });
+        logger.info("Formatted message", { message: firstShortenedUrl });
 
-        
-        // Responds with the modified message
+        // Responds with only the shortened URL
         res.json({ 
+            shortened_url: firstShortenedUrl, // SendS only the shortened URL
             event_name: "link_shortened",
-            message: modifiedMessage,
+            // message: modifiedMessage,
             status: "success",
             username: "link-snap-bot" 
         });
-        logger.info("response", {response: res.json})
     } catch (error) {
         logger.error('Error processing request', {
             message: error.message,
             stack: error.stack,
-            requestBody: { content: modifiedMessage }
         });
         res.status(500).json({ error: 'Failed to process the message' });
     }
