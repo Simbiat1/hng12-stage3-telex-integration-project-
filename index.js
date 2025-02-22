@@ -109,6 +109,7 @@ app.post('/shortenURL', async (req, res) => {
             status: "success",
             username: "link-snap-bot" 
         });
+        logger.info("response", {response: res.json})
     } catch (error) {
         logger.error('Error processing request', {
             message: error.message,
