@@ -100,6 +100,11 @@ app.post('/shortenURL', async (req, res) => {
         logger.info("Formatted message", { message: modifiedMessage });
         }
 
+       // Edits the original message in the Telex channel
+       await axios.put(`https://api.telex.im/channels/${channel_id}/messages`, {
+        content: modifiedMessage 
+    });
+
         // Responds with the modified message
         res.json({ 
             event_name: "link_shortened",
