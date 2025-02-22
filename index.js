@@ -56,7 +56,7 @@ async function shortenLink(longLink) {
 }
 
 // Endpoint to handle incoming messages for the modifier integration
-app.post('/shortenUrl', async (req, res) => {
+app.post('/webhook', async (req, res) => {
     const { message, settings, channel_id } = req.body; 
 
     if (!message || !settings || !channel_id) {

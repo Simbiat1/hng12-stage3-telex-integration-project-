@@ -29,6 +29,6 @@
             "required": true
           }
       ],
-      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/shortenURL"
+      "target_url": "https://hng12-stage3-telex-integration-project.onrender.com/webhook"
     }
   }
