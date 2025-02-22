@@ -32,7 +32,6 @@ const logger = winston.createLogger({
 const requestLog ={method: "GET", isAuthenticated: false}
 
 logger.info("An info log", requestLog);
-logger.error("An error log", requestLog);
 
 // Middleware to parse JSON requests
 app.use(express.json());
