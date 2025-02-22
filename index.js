@@ -52,14 +52,15 @@ async function shortenLink(longLink) {
 
 // Endpoint to handle incoming messages for the modifier integration
 app.post('/shortenURL', async (req, res) => {
+     // Logs incoming request
+     logger.info("Incoming request", { body: req.body });
+     
     const { message, settings, channel_id } = req.body; 
 
     if (!message || !settings || !channel_id) {
         return res.status(400).json({ error: 'Message, channel_id, and settings are required' });
     }
 
-    // Logs incoming request
-    logger.info("Incoming request", { body: req.body });
 
     // Regular expression to find URLs in the message
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -84,11 +85,7 @@ app.post('/shortenURL', async (req, res) => {
         // Logs formatted message
         logger.info("Formatted message", { message: modifiedMessage });
 
-        // Edits the original message in the Telex channel
-        await axios.put(`https://api.telex.im/channels/${channel_id}/messages`, {
-            content: modifiedMessage 
-        });
-
+        
         // Responds with the modified message
         res.json({ 
             event_name: "link_shortened",
