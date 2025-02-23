@@ -1,6 +1,6 @@
-# LinkSnap - URL Shortener Integration for Telex
+# Simple Link Shortener- URL Shortener Integration for Telex
 
-LinkSnap is a simple link shortener that automatically replaces long, unwieldy URLs with concise, shortened links. This integration works with the Telex messaging platform and utilizes the Bitly API for URL shortening.
+This application automatically replaces long, unwieldy URLs with concise, shortened links. This integration works with the Telex messaging platform and utilizes the Bitly API for URL shortening.
 
 ## Table of Contents
 
@@ -114,6 +114,6 @@ Once the server is running, you can send a POST request to the `/shortenURL` end
 
 ### Telex App Usage
 
-- Enable the LinkSnap App on Telex to send outputs to the channel you want to shorten a link in or, test on the telex_link-shortener channel in the Telex test organisation 4.
+- Enable the Simple Link Shortener App on Telex to send outputs to the channel you want to shorten a link in or, test on the telex_link-shortener channel in the Telex test organisation 4.
 - Send the long URL as a message in the channel
 - The shortened URL would be sent back as the output
