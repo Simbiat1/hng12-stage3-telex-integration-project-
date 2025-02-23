@@ -43,6 +43,17 @@ function extractUrlsFromHtml(html) {
             urls.push(url);
         }
     });
+    // Extracts URLs from text within <p> tags using regex
+    $('p').each((index, element) => {
+        const text = $(element).text();
+        const urlRegex = /(https?:\/\/[^\s]+)/g; // Regex to find URLs
+        const foundUrls = text.match(urlRegex); // Find URLs in the text
+
+        if (foundUrls) {
+            urls.push(...foundUrls); // Add found URLs to the array
+        }
+    });
+
     return urls;
 }
 
