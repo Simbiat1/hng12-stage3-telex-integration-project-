@@ -99,7 +99,7 @@ app.post('/shortenURL', async (req, res) => {
 
         // Responds with only the shortened URL
         res.json({ 
-          message: `<a href="${firstShortenedUrl}" target="_blank">${firstShortenedUrl}</a>`, // Sends the shortened URL as a clickable link
+            message: firstShortenedUrl,// Sends only the shortened URL 
             event_name: "link_shortened",
             // message: modifiedMessage,
             status: "success",
