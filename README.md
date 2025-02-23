@@ -111,3 +111,9 @@ Serves the integration.json file for the Telex integration.
 ## Usage
 
 Once the server is running, you can send a POST request to the `/shortenURL` endpoint with a message containing URLs. The integration will respond with the shortened URL.
+
+### Telex App Usage
+
+- Enable the LinkSnap App on Telex to send outputs to the channel you want to shorten a link in.
+- Send the long URL as a message in the channel
+- The shortened URL would be sent back as the output
