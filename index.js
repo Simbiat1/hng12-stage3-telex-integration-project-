@@ -64,6 +64,10 @@ async function shortenLink(longLink) {
     }
 }
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the Simple Link Shortener API!');
+});
+
 // Endpoint to handle incoming messages for the modifier integration
 app.post('/shortenURL', async (req, res) => {
     // Logs incoming request
@@ -95,7 +99,7 @@ app.post('/shortenURL', async (req, res) => {
 
         // Responds with only the shortened URL
         res.json({ 
-          message: firstShortenedUrl, // SendS only the shortened URL
+          message: `<a href="${firstShortenedUrl}" target="_blank">${firstShortenedUrl}</a>`, // Sends the shortened URL as a clickable link
             event_name: "link_shortened",
             // message: modifiedMessage,
             status: "success",
